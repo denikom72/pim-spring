@@ -1,6 +1,6 @@
 # **PIM – IaC Test Plan (Terraform + Optional Ansible)**
 
-This document defines testing strategy, testing stages, tools, and CI/CD flow for Infrastructure-as-Code (IaC) within the PIM Platform. It covers Terraform-based provisioning on AWS and optional Ansible server configuration.
+This document defines testing strategy, testing stages, tools, and CI/CD flow for Infrastructure-as-Code (IaC) within the PIM Platform. It covers Terraform-based provisioning ( NEW: Testphase to avoid configure based provisioning via puppet, chef, ... ) on AWS and optional Ansible server configuration.
 
 ---
 
