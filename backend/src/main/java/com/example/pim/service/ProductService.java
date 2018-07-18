@@ -105,4 +105,8 @@ public class ProductService {
         auditLogService.log("UPDATE_STATUS", "Product", updatedProduct.getId(), "system");
         return updatedProduct;
     }
+
+    public List<Product> searchProducts(String query) {
+        return productRepository.findByNameContainingIgnoreCaseOrSkuContainingIgnoreCase(query, query);
+    }
 }
