@@ -22,6 +22,17 @@ public class BulkOperationController {
         this.bulkOperationService = bulkOperationService;
     }
 
+    @PostMapping("/products/create")
+    public ResponseEntity<BulkOperation> initiateProductBulkCreate(@RequestBody List<Map<String, Object>> productData) {
+        String username = "system"; // TODO: Get username from security context
+        try {
+            BulkOperation operation = bulkOperationService.initiateBulkCreate(productData, username);
+            return new ResponseEntity<>(operation, HttpStatus.ACCEPTED);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
     @PostMapping("/products/update")
     public ResponseEntity<BulkOperation> initiateProductBulkUpdate(@RequestBody List<Map<String, Object>> productUpdates) {
         String username = "system"; // TODO: Get username from security context
@@ -37,6 +48,7 @@ public class BulkOperationController {
     public ResponseEntity<BulkOperation> getBulkOperationStatus(@PathVariable Long id) {
         return bulkOperationService.getBulkOperationStatus(id)
                 .map(operation -> new ResponseEntity<>(operation, HttpStatus.OK))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bulk operation not found"));
+                .orElseThrow(() -> new Response.StatusException(HttpStatus.NOT_FOUND, "Bulk operation not found"));
     }
 }
+

@@ -2,6 +2,7 @@ package com.example.pim.service;
 
 import com.example.pim.domain.Attribute;
 import com.example.pim.domain.Product;
+import com.example.pim.domain.ProductFamily;
 import com.example.pim.domain.ProductVariant;
 import com.example.pim.repository.AttributeRepository;
 import com.example.pim.repository.ProductVariantRepository;
@@ -20,7 +21,7 @@ public class ProductVariantService {
     private final ProductVariantRepository productVariantRepository;
     private final AttributeRepository attributeRepository;
     private final AuditLogService auditLogService;
-    private final AtomicInteger skuCounter = new AtomicInteger(1); // For basic sequential SKU generation
+    private final AtomicInteger skuCounter = new AtomicInteger(1); // Fallback for basic sequential SKU generation
 
     @Autowired
     public ProductVariantService(ProductVariantRepository productVariantRepository, AttributeRepository attributeRepository, AuditLogService auditLogService) {
@@ -31,10 +32,7 @@ public class ProductVariantService {
 
     public ProductVariant createProductVariant(Product product, ProductVariant productVariant) {
         if (productVariant.getSku() == null || productVariant.getSku().isEmpty()) {
-            // Auto-generate SKU if not provided
-            String baseSku = product.getSku();
-            String generatedSku = baseSku + "-VAR-" + skuCounter.getAndIncrement();
-            productVariant.setSku(generatedSku);
+            productVariant.setSku(generateSku(product, productVariant));
         }
 
         if (productVariantRepository.existsBySku(productVariant.getSku())) {
@@ -68,6 +66,29 @@ public class ProductVariantService {
         return createdProductVariant;
     }
 
+    private String generateSku(Product product, ProductVariant variant) {
+        ProductFamily family = product.getProductFamily();
+        if (family != null && family.getSkuGenerationPattern() != null && !family.getSkuGenerationPattern().isEmpty()) {
+            String pattern = family.getSkuGenerationPattern();
+            String sku = pattern.replace("{parent_sku}", product.getSku());
+
+            // Replace attribute placeholders, e.g., {COLOR}
+            for (Map.Entry<String, String> entry : variant.getAttributes().entrySet()) {
+                sku = sku.replace("{" + entry.getKey().toUpperCase() + "}", entry.getValue().replaceAll("\\s+", "-").toUpperCase());
+            }
+
+            // Handle invalid pattern if placeholders are not replaced
+            if (sku.contains("{") || sku.contains("}")) {
+                throw new IllegalArgumentException("Invalid SKU generation pattern or missing variant attributes for pattern: " + pattern);
+            }
+            return sku;
+        }
+
+        // Fallback to simple SKU generation
+        return product.getSku() + "-VAR-" + skuCounter.getAndIncrement();
+    }
+
+
     private boolean areAttributeMapsEqual(Map<String, String> map1, Map<String, String> map2, List<Attribute> variantAttributes) {
         if (map1 == null || map2 == null) {
             return map1 == map2;
@@ -88,4 +109,5 @@ public class ProductVariantService {
         return true;
     }
 }
+
 

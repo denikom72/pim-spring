@@ -1,9 +1,7 @@
 package com.example.pim.service;
 
-import com.example.pim.domain.Attribute;
-import com.example.pim.domain.Product;
-import com.example.pim.domain.ProductAttributeValue;
-import com.example.pim.domain.ProductFamily;
+import com.example.pim.domain.*;
+import com.example.pim.repository.AttributeRepository;
 import com.example.pim.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,14 +20,17 @@ public class ProductService {
     private final CompletenessScoreService completenessScoreService;
     private final ProductFamilyService productFamilyService;
     private final ProductAttributeValueService productAttributeValueService;
+    private final AttributeRepository attributeRepository;
+
 
     @Autowired
-    public ProductService(ProductRepository productRepository, AuditLogService auditLogService, CompletenessScoreService completenessScoreService, ProductFamilyService productFamilyService, ProductAttributeValueService productAttributeValueService) {
+    public ProductService(ProductRepository productRepository, AuditLogService auditLogService, CompletenessScoreService completenessScoreService, ProductFamilyService productFamilyService, ProductAttributeValueService productAttributeValueService, AttributeRepository attributeRepository) {
         this.productRepository = productRepository;
         this.auditLogService = auditLogService;
         this.completenessScoreService = completenessScoreService;
         this.productFamilyService = productFamilyService;
         this.productAttributeValueService = productAttributeValueService;
+        this.attributeRepository = attributeRepository;
     }
 
     @Transactional
@@ -87,6 +88,7 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
         if ("published".equalsIgnoreCase(newStatus)) {
+            // Check completeness threshold
             if (product.getProductFamily() != null) {
                 int threshold = product.getProductFamily().getCompletenessThreshold();
                 if (product.getCompletenessScore() < threshold) {
@@ -96,6 +98,20 @@ public class ProductService {
                 // Default behavior if no product family is assigned
                 if (product.getCompletenessScore() < 100) {
                     throw new IllegalArgumentException("Product must be 100% complete to be published without a product family.");
+                }
+            }
+
+            // Check if variants are complete
+            if (product.getVariants() != null && !product.getVariants().isEmpty()) {
+                List<Attribute> variantAttributes = attributeRepository.findAll().stream()
+                        .filter(Attribute::isVariantAttribute)
+                        .toList();
+                for (ProductVariant variant : product.getVariants()) {
+                    for (Attribute variantAttr : variantAttributes) {
+                        if (!variant.getAttributes().containsKey(variantAttr.getName()) || variant.getAttributes().get(variantAttr.getName()).isEmpty()) {
+                            throw new IllegalArgumentException("Cannot publish product: Variant with SKU '" + variant.getSku() + "' is incomplete. Missing value for attribute '" + variantAttr.getName() + "'.");
+                        }
+                    }
                 }
             }
         }

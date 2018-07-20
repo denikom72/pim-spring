@@ -36,5 +36,8 @@ public class ProductFamily {
     @Min(value = 0, message = "Completeness threshold must be between 0 and 100")
     @Max(value = 100, message = "Completeness threshold must be between 0 and 100")
     private int completenessThreshold = 80; // Default threshold
+
+    private String skuGenerationPattern; // e.g., "{parent_sku}-{attribute_code}"
 }
+
 
