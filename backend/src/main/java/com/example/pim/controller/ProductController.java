@@ -56,6 +56,20 @@ public class ProductController {
         }
     }
 
+    @PutMapping("/{id}/family")
+    public ResponseEntity<Product> changeProductFamily(@PathVariable Long id, @RequestBody Map<String, Long> payload) {
+        Long newFamilyId = payload.get("familyId");
+        if (newFamilyId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "familyId is mandatory.");
+        }
+        try {
+            Product updatedProduct = productService.changeProductFamily(id, newFamilyId);
+            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
     @GetMapping("/search")
     public ResponseEntity<List<Product>> searchProducts(@RequestParam String query) {
         List<Product> products = productService.searchProducts(query);
@@ -75,5 +89,6 @@ public class ProductController {
         return errors;
     }
 }
+
 
 

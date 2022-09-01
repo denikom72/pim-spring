@@ -176,8 +176,8 @@ This section outlines the implemented and planned features for the PIM system, b
 - [x] Rejects duplicate attribute codes immediately
 - [x] Validates regex patterns
 - [x] Prevents attribute deletion when used in products
-- [ ] Handles invalid default values for attribute type
-- [ ] Manages constraint violations during attribute updates
+- [x] Handles invalid default values for attribute type
+- [x] Manages constraint violations during attribute updates
 
 ---
 
@@ -187,9 +187,9 @@ This section outlines the implemented and planned features for the PIM system, b
 - [x] Required attribute validation works
 - [ ] UI correctly highlights missing fields (Frontend task)
 - [x] Prevents family deletion when assigned to products
-- [ ] Validates attribute compatibility during family changes
-- [ ] Handles data migration failures during family reassignment
-- [ ] Manages orphaned attributes after family modifications
+- [x] Validates attribute compatibility during family changes
+- [x] Handles data migration failures during family reassignment
+- [x] Manages orphaned attributes after family modifications
 
 ---
 

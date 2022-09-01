@@ -22,7 +22,9 @@ public class Attribute {
     private String name;
     private String type; // e.g., TEXT, NUMBER, COLOR, SIZE
     private String validationRegex; // Regex pattern for validation
+    private String defaultValue;
     private boolean variantAttribute; // true if this attribute can differentiate variants
 }
+
 
 

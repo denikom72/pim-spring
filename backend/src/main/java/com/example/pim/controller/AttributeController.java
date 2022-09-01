@@ -4,6 +4,7 @@ import com.example.pim.domain.Attribute;
 import com.example.pim.service.AttributeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,18 @@ public class AttributeController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Attribute> updateAttribute(@PathVariable Long id, @Valid @RequestBody Attribute attributeDetails) {
+        try {
+            Attribute updatedAttribute = attributeService.updateAttribute(id, attributeDetails);
+            return new ResponseEntity<>(updatedAttribute, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Attribute code already exists.");
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Attribute> getAttributeById(@PathVariable Long id) {
         return attributeService.getAttributeById(id)
@@ -55,4 +68,5 @@ public class AttributeController {
         }
     }
 }
+
 
