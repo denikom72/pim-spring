@@ -228,13 +228,13 @@ This section outlines the implemented and planned features for the PIM system, b
 #### **US-501: Product Review Workflow**
 **Acceptance Criteria:**
 - [x] State transitions work correctly
-- [ ] Role-based permissions enforce workflow
-- [ ] Notifications sent appropriately
-- [ ] Prevents unauthorized state transitions
-- [ ] Validates reviewer assignments exist
-- [ ] Handles missing required approvals
-- [ ] Manages workflow deadlocks
-- [ ] Recovers from notification service failures
+- [x] Role-based permissions enforce workflow
+- [x] Notifications sent appropriately
+- [x] Prevents unauthorized state transitions
+- [x] Validates reviewer assignments exist
+- [x] Handles missing required approvals
+- [x] Manages workflow deadlocks
+- [x] Recovers from notification service failures
 
 ---
 
