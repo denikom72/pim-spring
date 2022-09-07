@@ -47,4 +47,27 @@ public class MediaController {
         List<Media> media = mediaService.getMediaForProduct(productId);
         return new ResponseEntity<>(media, HttpStatus.OK);
     }
+
+    @PutMapping("/{mediaId}/primary")
+    public ResponseEntity<Media> setPrimaryImage(@PathVariable Long productId, @PathVariable Long mediaId) {
+        try {
+            Media updatedMedia = mediaService.setPrimaryImage(productId, mediaId);
+            return new ResponseEntity<>(updatedMedia, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{mediaId}")
+    public ResponseEntity<Void> deleteMedia(@PathVariable Long mediaId) {
+        try {
+            mediaService.deleteMedia(mediaId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
 }
+

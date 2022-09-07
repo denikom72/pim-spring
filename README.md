@@ -198,14 +198,14 @@ This section outlines the implemented and planned features for the PIM system, b
 #### **US-301: Upload Images**
 **Acceptance Criteria:**
 - [x] Successful upload of supported formats
-- [ ] Thumbnail generation works automatically
-- [ ] Image sorting and primary selection functional
+- [x] Thumbnail generation works automatically
+- [x] Image sorting and primary selection functional
 - [x] Rejects unsupported formats
 - [x] Blocks oversized files
-- [ ] Prevents exceeding image limit
-- [ ] Handles corrupt image files gracefully
-- [ ] Manages storage quota exceeded scenarios
-- [ ] Recovers from failed thumbnail generation
+- [x] Prevents exceeding image limit
+- [x] Handles corrupt image files gracefully
+- [x] Manages storage quota exceeded scenarios
+- [x] Recovers from failed thumbnail generation
 
 ---
 

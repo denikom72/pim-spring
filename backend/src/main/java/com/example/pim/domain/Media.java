@@ -19,6 +19,8 @@ public class Media {
     @NotBlank(message = "File path is mandatory")
     private String filePath;
 
+    private String thumbnailPath;
+
     @NotBlank(message = "File type is mandatory")
     private String fileType; // e.g., "image/jpeg", "image/png"
 
@@ -26,3 +28,4 @@ public class Media {
 
     private boolean isPrimary; // To mark the main image for a product
 }
+
