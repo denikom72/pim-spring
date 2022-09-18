@@ -97,8 +97,7 @@ public class ProductService {
                 if (product.getCompletenessScore() < threshold) {
                     throw new IllegalArgumentException("Product completeness score (" + product.getCompletenessScore() + "%) is below the required threshold (" + threshold + "%) for publishing.");
                 }
-            }
-            else {
+            } else {
                 // Default behavior if no product family is assigned
                 if (product.getCompletenessScore() < 100) {
                     throw new IllegalArgumentException("Product must be 100% complete to be published without a product family.");
@@ -156,5 +155,9 @@ public class ProductService {
 
     public List<Product> searchProducts(String query) {
         return productRepository.findByNameContainingIgnoreCaseOrSkuContainingIgnoreCase(query, query);
+    }
+
+    public List<Product> getExportableProducts(int minCompletenessScore) {
+        return productRepository.findByStatusAndCompletenessScoreGreaterThanEqual("published", minCompletenessScore);
     }
 }

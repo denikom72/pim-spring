@@ -14,7 +14,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     long countByCategoriesContaining(Category category);
     long countByProductFamily(ProductFamily productFamily);
     List<Product> findByNameContainingIgnoreCaseOrSkuContainingIgnoreCase(String name, String sku);
+    List<Product> findByStatusAndCompletenessScoreGreaterThanEqual(String status, int completenessScore);
 }
+
 
 
 

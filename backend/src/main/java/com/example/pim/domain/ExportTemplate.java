@@ -22,5 +22,10 @@ public class ExportTemplate {
     @NotBlank(message = "Output format is mandatory")
     private String outputFormat; // e.g., CSV, XML, JSON
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "channel_id")
+    private Channel channel;
+
     // Could also include mapping configurations here
 }
+

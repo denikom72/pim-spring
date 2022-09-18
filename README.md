@@ -26,14 +26,14 @@ This PIM backend provides a wide range of features, organized by epics:
 
 ## Technology Stack
 
-*   **Backend:**
+*   **Backend**:
     *   Java 17
     *   Spring Boot 3
     *   Spring Data JPA (Hibernate)
     *   Maven (Dependency Management)
-*   **Database:**
+*   **Database**:
     *   H2 (In-memory database for development)
-*   **Frontend (Scaffolded):**
+*   **Frontend (Scaffolded)**:
     *   React
     *   Node.js & npm
 
@@ -243,24 +243,24 @@ This section outlines the implemented and planned features for the PIM system, b
 #### **US-601: Channels**
 **Acceptance Criteria:**
 - [x] Channel-specific overrides work correctly
-- [ ] Export filters published/complete products only
+- [x] Export filters published/complete products only
 - [x] Validates channel configuration before activation
-- [ ] Handles external system connectivity issues
-- [ ] Manages data mapping failures during export
-- [ ] Prevents channel deletion with active exports
+- [x] Handles external system connectivity issues
+- [x] Manages data mapping failures during export
+- [x] Prevents channel deletion with active exports
 
 ---
 
 #### **US-602: Export Templates**
 **Acceptance Criteria:**
 - [x] Template creation and mapping work
-- [ ] Scheduled exports execute reliably
+- [x] Scheduled exports execute reliably
 - [x] Logs capture export activities
-- [ ] Validates template syntax before saving
-- [ ] Handles malformed data during export
-- [ ] Manages large export memory issues
-- [ ] Recovers from interrupted export jobs
-- [ ] Notifies on export failures with specific errors
+- [x] Validates template syntax before saving
+- [x] Handles malformed data during export
+- [x] Manages large export memory issues
+- [x] Recovers from interrupted export jobs
+- [x] Notifies on export failures with specific errors
 
 ---
 
